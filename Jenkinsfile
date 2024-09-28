@@ -1,5 +1,5 @@
 pipeline {
-    agent 'My-Jenkins-Agent'
+    agent My-Jenkins-Agent
 
     tools{
         jdk 'JDK21'
