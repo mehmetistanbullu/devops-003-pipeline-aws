@@ -48,29 +48,29 @@ pipeline {
             }
         }
 
-        // stage('Quality Gate') {
-        //     steps {
-        //         script {
-        //             waitForQualityGate abortPipeline:false, credantialsId: 'jenkins-sonarqube-token'
-        //         }
-        //     }
-        // }
+/*         stage('Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline:false, credantialsId: 'jenkins-sonarqube-token'
+                }
+            }
+        } */
 
         stage('Build & Push Docker Image to DockerHub') {
             steps {
                 script {
-                    docker.withRegistry('', 'DOCKER_LOGIN') {
+                    docker.withRegistry('', DOCKER_LOGIN) {
                         docker_image = docker.build "${IMAGE_NAME}"
                     }
 
-                    docker.withRegistry('', 'DOCKER_LOGIN') {
+                    docker.withRegistry('', DOCKER_LOGIN) {
                         docker_image = docker.push("${IMAGE_TAG}")
                         docker_image = docker.push('latest')
                     }
 
-                // sh 'echo docker login -u mimaraslan -p DOCKERHUB_TOKEN'
+/*                 // sh 'echo docker login -u mimaraslan -p DOCKERHUB_TOKEN'
                 // sh 'echo docker login -u mimaraslan -p ${dockerhub}'
-                // sh 'docker image push  mimaraslan/my-application:latest'
+                // sh 'docker image push  mimaraslan/my-application:latest' */
                 }
             }
         }
