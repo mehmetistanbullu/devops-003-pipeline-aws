@@ -7,7 +7,7 @@ pipeline {
         APP_NAME = 'devops-003-pipeline-aws'
         RELEASE = '1.0'
         DOCKER_USER = 'istanbullumem'
-        DOCKER_LOGIN = 'dockerhub'
+        DOCKER_LOGIN = credentials('dockerhub')
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}.${BUILD_NUMBER}"
         asd = "${IMAGE_NAME}:${IMAGE_TAG}"
@@ -59,13 +59,13 @@ pipeline {
         stage('Build & Push Docker Image to DockerHub') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_LOGIN') {
-                        docker_image = docker.build "${IMAGE_NAME}:${IMAGE_TAG}"
+                    docker.withRegistry('', 'DOCKER_LOGIN') {
+                        docker_image = docker.build "${IMAGE_NAME}"
                     }
 
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_LOGIN') {
-                        docker_image = docker.push "${IMAGE_TAG}"
-                        docker_image = docker.push "latest"
+                    docker.withRegistry('', 'DOCKER_LOGIN') {
+                        docker_image = docker.push("${IMAGE_TAG}")
+                        docker_image = docker.push('latest')
                     }
 
                 // sh 'echo docker login -u mimaraslan -p DOCKERHUB_TOKEN'
